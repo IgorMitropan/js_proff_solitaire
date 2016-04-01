@@ -5,6 +5,12 @@ import Foundation from './foundation.js';
 import Pill from './pill.js';
 import Card from './card.js';
 
+import * as polyfills from'./polyfills';
+
+polyfills.installMatches(); //cross browser polyfill for 'matches' (does not supported by IE)
+polyfills.installClosest(); //cross browser polyfill for 'closest' (does not supported by IE)
+polyfills.installCustomEvent(); //cross browser polyfill for 'custom events' (does not supported by IE)
+
 export default class Game extends dragManager {
     constructor(options) {
         super(options);

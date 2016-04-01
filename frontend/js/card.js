@@ -2,7 +2,6 @@
 
 import DragElement from './dragElement.js';
 
-
 const CSS_SPRITE = {
     cardWidth: 90,
     cardHeight: 132,
@@ -19,10 +18,7 @@ export default class Card  extends DragElement{
         this._suit = options.suit;
         this._cardNumber = options.cardNumber;
 
-        this._el.classList.add('card','downturned');
-
-
-
+        this._applyStyles();
 
         options.parent.appendChild(this._el);
     }
@@ -48,23 +44,26 @@ export default class Card  extends DragElement{
         return this._cardNumber;
     }
 
-    _setBackgroundPosition() {
-        let PositionY = - CSS_SPRITE.offsetTop - (CSS_SPRITE.cardHeight + CSS_SPRITE.offsetBetweenCardsTop) * this._suit;
-        let PositionX = - CSS_SPRITE.offsetLeft - (CSS_SPRITE.cardWidth + CSS_SPRITE.offsetBetweenCardsLeft) * this._cardNumber
-
-        this._el.style.backgroundPositionY = PositionY + 'px';
-        this._el.style.backgroundPositionX = PositionX + 'px';
-    }
-
     turnDown() {
-        this._el.style.backgroundPositionY = '';
-        this._el.style.backgroundPositionX = '';
+        this._el.style.backgroundPosition = '';
         this._el.classList.add('downturned');
     }
 
     turnUp() {
         this._el.classList.remove('downturned');
         this._setBackgroundPosition();
+    }
+
+    _applyStyles() {
+        this._el.classList.add('card');
+        this._el.classList.add('downturned');
+    }
+
+    _setBackgroundPosition() {
+        let PositionY = - CSS_SPRITE.offsetTop - (CSS_SPRITE.cardHeight + CSS_SPRITE.offsetBetweenCardsTop) * this._suit;
+        let PositionX = - CSS_SPRITE.offsetLeft - (CSS_SPRITE.cardWidth + CSS_SPRITE.offsetBetweenCardsLeft) * this._cardNumber;
+
+        this._el.style.backgroundPosition = PositionX + 'px ' + PositionY + 'px';
     }
 
 }
