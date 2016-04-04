@@ -9,16 +9,16 @@ export default class DropTarget {
     onDragEnd(avatar, event) {
         let avatarInfo = avatar.getDragInfo(event);
 
-        if (this._isAvatarPossible(avatarInfo)) {
+        if (this._isAvatarAllowable(avatarInfo)) {
             this._takeAvatar(avatarInfo);
 
             this._generateSuccessDrop(avatarInfo);
         } else {
-            avatar.onDragCancel(avatarInfo);
+            avatar.onDragCancel();
         }
     }
 
-    _isAvatarPossible(avatarInfo) { // method for override
+    _isAvatarAllowable(avatarInfo) { // method for override
         return true;
     }
 
@@ -34,10 +34,8 @@ export default class DropTarget {
             bubbles: true,
             cancelable: true,
             detail: {
-                suit: avatarInfo.suit,
-                cardNumber: avatarInfo.cardNumber,
                 newParent: this._el,
-                previousParent: avatarInfo.previousParent
+                previousPlace: avatarInfo.previousParent
             }
         });
 

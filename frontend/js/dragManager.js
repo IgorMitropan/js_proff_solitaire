@@ -80,11 +80,11 @@ export default class dragManager {
     static _findDraggableElement(event) {
         let elem = event.target;
 
-        while (elem != document && !elem.draggElement) {
+        while (elem != document && !elem.dragElement) {
             elem = elem.parentNode;
         }
 
-        return elem.draggElement;
+        return elem.dragElement;
     }
 
     _findDropTarget(elem) {

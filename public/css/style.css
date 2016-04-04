@@ -1,16 +1,34 @@
 body {
-    overflow: hidden;
     background: url(../img/table.jpg) no-repeat;
     background-size: cover;
 }
 .container {
-    width: 1000px;
-    height: 1000px;
+    width: 980px;
+    height: 885px;
     margin: 0;
     padding: 10px;
 }
 .innerContainer {
     display: inline-block;
+}
+.cardPlace {
+    width: 92px;
+    height: 134px;
+    margin: 12px 22px;
+    border-radius: 8px;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+}
+.cardPlace.foundation {
+    margin: 10px 20px;
+    border: 2px solid #ffffff;
+}
+.cardPlace.pill {
+    margin: 10px 20px;
+    border-radius: 8px 8px 0 0;
+    border: 2px solid #ffffff;
+    border-bottom: none;
 }
 .card {
     width: 90px;
@@ -32,25 +50,16 @@ body {
     margin-top: 15px;
     margin-left: -1px;
 }
-
-.cardPlace {
-    width: 92px;
-    height: 134px;
-    margin: 12px 22px;
-    border-radius: 8px;
-    display: inline-block;
-    vertical-align: middle;
-    position: relative;
-}
-.cardPlace.foundation {
-    margin: 10px 20px;
-    border: 2px solid #ffffff;
-}
-.cardPlace.pill {
-    margin: 10px 20px;
-    border-radius: 8px 8px 0 0;
-    border: 2px solid #ffffff;
-    border-bottom: none;
+.notification {
+    position: absolute;
+    z-index: 1000;
+    padding: 10px 10px 15px;
+    margin: 0;
+    border-radius: 15px;
+    border: 2px solid ;
+    color: white;
+    font: normal 50px Georgia;
+    background: darkred;
 }
 
 .js-hidden {

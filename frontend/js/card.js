@@ -18,7 +18,7 @@ export default class Card  extends DragElement{
         this._suit = options.suit;
         this._cardNumber = options.cardNumber;
 
-        this._applyStyles();
+        this._applyStyleForNewCard();
 
         options.parent.appendChild(this._el);
     }
@@ -45,18 +45,30 @@ export default class Card  extends DragElement{
     }
 
     turnDown() {
+        this._el.dataset.draggable = '';
+        this._applyStyleFoeDownturnedCard();
+    }
+
+    turnUp() {
+        this._el.dataset.draggable = true;
+        this._applyStyleForUpturnedCard();
+    }
+
+//---------------------non-logical methods changing styles---------------------------
+
+    _applyStyleForNewCard() {
+        this._el.classList.add('card');
+        this._el.classList.add('downturned');
+    }
+
+    _applyStyleForDownturnedCard() {
         this._el.style.backgroundPosition = '';
         this._el.classList.add('downturned');
     }
 
-    turnUp() {
+    _applyStyleForUpturnedCard() {
         this._el.classList.remove('downturned');
         this._setBackgroundPosition();
-    }
-
-    _applyStyles() {
-        this._el.classList.add('card');
-        this._el.classList.add('downturned');
     }
 
     _setBackgroundPosition() {
@@ -65,5 +77,4 @@ export default class Card  extends DragElement{
 
         this._el.style.backgroundPosition = PositionX + 'px ' + PositionY + 'px';
     }
-
 }

@@ -1,15 +1,12 @@
 'use strict';
+import installCustomEvent from'./polyfills';
+installCustomEvent(); //cross browser polyfill for 'custom events' (does not supported by IE)
+
 import dragManager from './dragManager.js';
 import Stock from './stock.js';
 import Foundation from './foundation.js';
 import Pill from './pill.js';
-import Card from './card.js';
-
-import * as polyfills from'./polyfills';
-
-polyfills.installMatches(); //cross browser polyfill for 'matches' (does not supported by IE)
-polyfills.installClosest(); //cross browser polyfill for 'closest' (does not supported by IE)
-polyfills.installCustomEvent(); //cross browser polyfill for 'custom events' (does not supported by IE)
+import Notification from './notification.js';
 
 export default class Game extends dragManager {
     constructor(options) {
@@ -23,14 +20,33 @@ export default class Game extends dragManager {
             element: this._el.querySelector('[data-component="stock"]')
         });
         this._stock.createDeck();
+
         this._createPills();
 
-        this._el.addEventListener('successDrop', this._changePossibleCard.bind(this));
+        this._el.addEventListener('successDrop', this._changeAllowableCard.bind(this));
 }
+//-------------------- event handler------------------
+    _changeAllowableCard(event) {
+        let previousPlace = this._findDropTarget(event.detail.previousPlace);
 
+        if (previousPlace) {
+            previousPlace.changeAllowableCards();
+
+            if (previousPlace.turnUpCard) {
+                previousPlace.turnUpCard();
+            }
+        }
+
+        if ( this._allFoundationsAreFulfilled() ) {
+           this._showVictoryNotification();
+        }
+    }
+
+//--------------------- main private methods-----------------
     _createFoundations() {
-        let foundations = this._el.querySelectorAll('[data-component="foundation"]');
-        [].forEach.call(foundations,(elem)=>{
+        this._foundations = this._el.querySelectorAll('[data-component="foundation"]');
+
+        [].forEach.call(this._foundations,(elem)=>{
             new Foundation({
                 element: elem
             });
@@ -38,8 +54,9 @@ export default class Game extends dragManager {
     }
 
     _createPillPlaces() {
-        let pillPlaces = this._el.querySelectorAll('[data-component="pill"]');
-        [].forEach.call(pillPlaces,(elem)=>{
+        this._pillPlaces = this._el.querySelectorAll('[data-component="pill"]');
+
+        [].forEach.call(this._pillPlaces,(elem)=>{
             new Pill({
                 element: elem
             });
@@ -47,11 +64,10 @@ export default class Game extends dragManager {
     }
 
     _createPills() {
-        let pills = this._el.querySelectorAll('[data-component="pill"]');
-        for (let i = 0; i < pills.length; i++ ) {
+        for (let i = 0; i < this._pillPlaces.length; i++ ) {
             for (let j = 0; j <= i; j++) {
 
-                let parent = pills[i];
+                let parent = this._pillPlaces[i];
                 while(parent.lastElementChild) {
                     parent = parent.lastElementChild;
                 }
@@ -60,36 +76,29 @@ export default class Game extends dragManager {
                 parent.appendChild(card);
 
                 if (j === i) {
-                    card.draggElement.turnUp();
-                    pills[i].dropTarget.changePossibleCards();
+                    card.dragElement.turnUp();
+                    this._pillPlaces[i].dropTarget.changeAllowableCards();
                 }
             }
         }
     }
 
-    _changePossibleCard(event) {
-        let previousParent = this._findDropTarget(event.detail.previousParent);
+//------------------supported private methods
+    _allFoundationsAreFulfilled() {
 
-        if (previousParent) {
-            previousParent.changePossibleCards();
-
-            if (previousParent.turnUpCard) {
-                previousParent.turnUpCard();
-            }
-        }
-
-        this._doesPlayerWin();
+        return [].every.call(this._foundations, elem => elem.children.length === 13);
     }
 
-    _doesPlayerWin() {
-        let foundations = this._el.querySelectorAll('[data-component="foundation"]');
+    _showVictoryNotification() {
+        [].forEach.call(this._foundations,(elem)=>{
+            elem.lastElementChild.dragElement = null;
+        });
 
-        let AllFoundationAreFulfilled = [].every.call(foundations, elem => elem.children.length === 13);
-
-        if (AllFoundationAreFulfilled) {
-            alert('Victory!!!! \nI have very less time to congratulate you better :(( \nBut I promise to do that');
-        }
-
+        new Notification({
+            place: this._el,
+            position: 'centerUp',
+            text: 'Congratulations! You win!'
+        });
     }
 
 }

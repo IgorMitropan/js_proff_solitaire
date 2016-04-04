@@ -4,7 +4,7 @@ import Avatar from './avatar.js';
 export default class DragElement {
     constructor(options) {
         this._el = document.createElement('div');
-        this._el.draggElement = this;
+        this._el.dragElement = this;
     }
 
     _makeAvatar() {

@@ -12,15 +12,13 @@ export default class Stock {
         this._cardPlace = this._el.querySelector('[data-selector="placeForOpenedCards"]');
 
         this._stock.addEventListener('click', this._openCard.bind(this));
-
-
-
     }
 
     createDeck() {
         this._newDeck = [[],[],[],[]];
         for (let i = 0; i < (NUMBER_OF_CARDS_OF_ONE_SUIT * NUMBER_OF_SUITS); i++) {
-            let generatedCard = this.generateRandomCard();
+            let generatedCard = this._generateRandomCard();
+
             new Card({
                 suit: generatedCard.suit,
                 cardNumber: generatedCard.cardNumber,
@@ -33,7 +31,27 @@ export default class Stock {
         return this._stock.lastElementChild;
     }
 
-    generateRandomCard() {
+    _openCard() {
+        let topCard = this._stock.lastElementChild;
+        if (topCard) {
+            topCard.dragElement.turnUp();
+            this._cardPlace.appendChild(topCard);
+
+        } else {
+            this._returnCardsToStock();
+        }
+    }
+
+    _returnCardsToStock() {
+        let card;
+
+        while (card = this._cardPlace.lastElementChild) {
+            card.dragElement.turnDown();
+            this._stock.appendChild(card);
+        }
+    }
+
+    _generateRandomCard() {
         let suit;
         let cardNumber;
 
@@ -48,26 +66,6 @@ export default class Stock {
             suit: suit,
             cardNumber: cardNumber
         };
-    }
-
-    _openCard() {
-        let topCard = this._stock.lastElementChild;
-        if (topCard) {
-            topCard.draggElement.turnUp();
-            this._cardPlace.appendChild(topCard);
-
-        } else {
-            this._returnCardsToStock();
-        }
-    }
-
-    _returnCardsToStock() {
-        let card;
-
-        while (card = this._cardPlace.lastElementChild) {
-            card.draggElement.turnDown();
-            this._stock.appendChild(card);
-        }
     }
 
 }
