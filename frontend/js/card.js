@@ -46,7 +46,8 @@ export default class Card  extends DragElement{
 
     turnDown() {
         this._el.dataset.draggable = '';
-        this._applyStyleFoeDownturnedCard();
+
+        this._applyStyleForDownturnedCard();
     }
 
     turnUp() {

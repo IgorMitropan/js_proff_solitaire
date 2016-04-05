@@ -15,37 +15,36 @@ export default class Notification {
     }
 
     positionAt(options) {
+        let box;
+        let top;
+        let left;
 
-            let box;
-            let top;
-            let left;
+        if (options.anchor) {
+            box = options.anchor.getBoundingClientRect();
+        } else {
+            box = this._el.parentNode.getBoundingClientRect();
+        }
 
-            if (options.anchor) {
-                box = options.anchor.getBoundingClientRect();
-            } else {
-                box = this._el.parentNode.getBoundingClientRect();
-            }
-
-            if (options.position) {
-                switch (options.position) {
-                    case 'center': {
-                        top = box.top + box.height / 2 - this._el.offsetHeight / 2;
-                        left = box.left + box.width / 2 - this._el.offsetWidth / 2;
-                        break;
-                    }
-                    case 'centerUp': {
-                        top = box.top + box.height / 4 - this._el.offsetHeight / 2;
-                        left = box.left + box.width / 2 - this._el.offsetWidth / 2;
-                        break;
-                    }
+        if (options.position) {
+            switch (options.position) {
+                case 'center': {
+                    top = box.top + box.height / 2 - this._el.offsetHeight / 2;
+                    left = box.left + box.width / 2 - this._el.offsetWidth / 2;
+                    break;
                 }
-            } else {
-                top = box.top + TOP_OFFSET_FOR_NOTIFICATION;
-                left = box.right - this._el.offsetWidth - RIGHT_OFFSET_FOR_NOTIFICATION;
+                case 'centerUp': {
+                    top = box.top + box.height / 4 - this._el.offsetHeight / 2;
+                    left = box.left + box.width / 2 - this._el.offsetWidth / 2;
+                    break;
+                }
             }
+        } else {
+            top = box.top + TOP_OFFSET_FOR_NOTIFICATION;
+            left = box.right - this._el.offsetWidth - RIGHT_OFFSET_FOR_NOTIFICATION;
+        }
 
-            this._el.style.top = top + 'px';
-            this._el.style.left = left + 'px';
+        this._el.style.top = top + 'px';
+        this._el.style.left = left + 'px';
     }
 
     show() {
