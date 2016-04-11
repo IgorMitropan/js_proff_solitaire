@@ -1,6 +1,10 @@
 'use strict';
-import installCustomEvent from'./polyfills';
-installCustomEvent(); //cross browser polyfill for 'custom events' (does not supported by IE)
+import * as polyfills from'./polyfills';
+
+polyfills.installMatches(); //cross browser polyfill for 'matches' (does not supported by IE)
+polyfills.installClosest(); //cross browser polyfill for 'closest' (does not supported by IE)
+polyfills.installCustomEvent(); //cross browser polyfill for 'custom events' (does not supported by IE)
+
 
 import dragManager from './dragManager.js';
 import Stock from './stock.js';
@@ -24,8 +28,9 @@ export default class Game extends dragManager {
         this._createPills();
 
         this._el.addEventListener('successDrop', this._changeAllowableCard.bind(this));
+        this._el.addEventListener('dblclick', this._sendCardToFoundation.bind(this));
 }
-//-------------------- event handler------------------
+//-------------------- event handlers------------------
     _changeAllowableCard(event) {
         let previousPlace = this._findDropTarget(event.detail.previousPlace);
 
@@ -40,6 +45,21 @@ export default class Game extends dragManager {
         if ( this._allFoundationsAreFulfilled() ) {
            this._showVictoryNotification();
         }
+    }
+
+    _sendCardToFoundation(event) {
+        let clickedCard = event.target.closest('[data-draggable]');
+
+        if (!clickedCard || clickedCard.firstElementChild) {
+            return;
+        }
+
+       [].forEach.call(this._foundations, (elem)=> {
+           if (clickedCard.dragElement) {
+               let avatar = clickedCard.dragElement.onDragStart(event.pageX, event.pageY, event);
+               elem.dropTarget.onDragEnd(avatar);
+           }
+       });
     }
 
 //--------------------- main private methods-----------------

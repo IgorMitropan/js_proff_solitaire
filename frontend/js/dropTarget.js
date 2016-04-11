@@ -6,8 +6,8 @@ export default class DropTarget {
         options.element.dropTarget = this;
     }
 
-    onDragEnd(avatar, event) {
-        let avatarInfo = avatar.getDragInfo(event);
+    onDragEnd(avatar) {
+        let avatarInfo = avatar.getDragInfo();
 
         if (this._isAvatarAllowable(avatarInfo)) {
             this._takeAvatar(avatarInfo);
