@@ -64,7 +64,7 @@ export default class Avatar {
     }
 
     initFromEvent(downX, downY, event) {
-        if (!event.target.dataset.draggable) {
+        if (event.target.dataset.side === 'downturned' ) {
             return false;
         }
 

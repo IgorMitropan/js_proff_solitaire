@@ -18,6 +18,7 @@ export default class Card  extends DragElement{
         this._suit = options.suit;
         this._cardNumber = options.cardNumber;
 
+        this._el.dataset.side = 'downturned';
         this._applyStyleForNewCard();
 
         options.parent.appendChild(this._el);
@@ -45,13 +46,12 @@ export default class Card  extends DragElement{
     }
 
     turnDown() {
-        this._el.dataset.draggable = '';
-
+        this._el.dataset.side = 'downturned';
         this._applyStyleForDownturnedCard();
     }
 
     turnUp() {
-        this._el.dataset.draggable = true;
+        this._el.dataset.side = 'upturned';
         this._applyStyleForUpturnedCard();
     }
 

@@ -13,7 +13,7 @@ export default class Pill extends DropTarget {
     }
 
     changeAllowableCards() {
-        let lastElement = this._findLastElement();
+        let lastElement = this.findLastElement();
 
         if(lastElement !== this._el) {
             switch (lastElement.dragElement.suit) {
@@ -40,8 +40,17 @@ export default class Pill extends DropTarget {
         }
     }
 
+    findLastElement() {
+        let lastElement = this._el;
+        while(lastElement.lastElementChild) {
+            lastElement = lastElement.lastElementChild;
+        }
+
+        return lastElement;
+    }
+
     turnUpCard() {
-        let lastElement = this._findLastElement();
+        let lastElement = this.findLastElement();
         if (lastElement.classList.contains('downturned')) {
             lastElement.dragElement.turnUp();
         }
@@ -55,7 +64,7 @@ export default class Pill extends DropTarget {
     }
 
     _takeAvatar(avatarInfo) {
-        let parent = this._findLastElement();
+        let parent = this.findLastElement();
 
         parent.appendChild(avatarInfo.elem);
         avatarInfo.elem.style.position='absolute';
@@ -65,15 +74,4 @@ export default class Pill extends DropTarget {
 
         this.changeAllowableCards();
     }
-
-    _findLastElement() {
-        let lastElement = this._el;
-        while(lastElement.lastElementChild) {
-            lastElement = lastElement.lastElementChild;
-        }
-
-        return lastElement;
-    }
-
-
 }

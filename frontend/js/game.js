@@ -30,6 +30,7 @@ export default class Game extends dragManager {
         this._el.addEventListener('successDrop', this._changeAllowableCard.bind(this));
         this._el.addEventListener('dblclick', this._sendCardToFoundation.bind(this));
 }
+
 //-------------------- event handlers------------------
     _changeAllowableCard(event) {
         let previousPlace = this._findDropTarget(event.detail.previousPlace);
@@ -48,18 +49,23 @@ export default class Game extends dragManager {
     }
 
     _sendCardToFoundation(event) {
-        let clickedCard = event.target.closest('[data-draggable]');
+        let clickedCard = event.target.closest('[data-side="upturned"]');
 
-        if (!clickedCard || clickedCard.firstElementChild) {
+        if (!clickedCard || clickedCard.firstElementChild || clickedCard.parentNode.dataset.component ==='foundation') {
             return;
         }
 
-       [].forEach.call(this._foundations, (elem)=> {
-           if (clickedCard.dragElement) {
-               let avatar = clickedCard.dragElement.onDragStart(event.pageX, event.pageY, event);
-               elem.dropTarget.onDragEnd(avatar);
-           }
-       });
+        let targetFoundation = [].filter.call(this._foundations,
+                elem => elem.dropTarget.isCardAllowable({
+                    suit: clickedCard.dragElement.suit,
+                    cardNumber: clickedCard.dragElement.cardNumber
+        }))[0];
+
+        if(targetFoundation) {
+            let avatar = clickedCard.dragElement.onDragStart(event.pageX, event.pageY, event);
+            targetFoundation.dropTarget.onDragEnd(avatar);
+            this._sendAllCardsToFoundations();
+        }
     }
 
 //--------------------- main private methods-----------------
@@ -103,7 +109,25 @@ export default class Game extends dragManager {
         }
     }
 
-//------------------supported private methods
+//------------------supported private methods----------------
+    _sendAllCardsToFoundations() {
+        if ( this._el.querySelector('[data-side = "downturned"]') ) {
+            return;
+        }
+
+        [].forEach.call(this._pillPlaces,(elem)=>{
+            let lastCard = elem.dropTarget.findLastElement();
+
+            if (lastCard !== elem) {
+                this._sendCardToFoundation({
+                    target: lastCard,
+                    pageX: 0,
+                    pageY: 0
+                })
+            }
+        });
+    }
+
     _allFoundationsAreFulfilled() {
 
         return [].every.call(this._foundations, elem => elem.children.length === 13);
@@ -120,5 +144,4 @@ export default class Game extends dragManager {
             text: 'Congratulations! You win!'
         });
     }
-
 }

@@ -25,6 +25,10 @@ import DropTarget from './dropTarget.js';
         }
     }
 
+    isCardAllowable(cardInfo) {
+        return this._isAvatarAllowable(cardInfo);
+    }
+
     _isAvatarAllowable(avatarInfo) {
         let suitMatches = (this._allowableCards.suit.indexOf(avatarInfo.suit) > -1);
         let cardMatches = (this._allowableCards.cardNumber.indexOf(avatarInfo.cardNumber) > -1);
