@@ -30,10 +30,11 @@ import DropTarget from './dropTarget.js';
     }
 
     _isAvatarAllowable(avatarInfo) {
+        let isCardSingle = !(avatarInfo.elem.firstElementChild);
         let suitMatches = (this._allowableCards.suit.indexOf(avatarInfo.suit) > -1);
         let cardMatches = (this._allowableCards.cardNumber.indexOf(avatarInfo.cardNumber) > -1);
 
-        return (suitMatches && cardMatches);
+        return (suitMatches && cardMatches && isCardSingle);
     }
 
     _takeAvatar(avatarInfo) {

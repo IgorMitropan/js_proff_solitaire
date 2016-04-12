@@ -51,12 +51,13 @@ export default class Game extends dragManager {
     _sendCardToFoundation(event) {
         let clickedCard = event.target.closest('[data-side="upturned"]');
 
-        if (!clickedCard || clickedCard.firstElementChild || clickedCard.parentNode.dataset.component ==='foundation') {
+        if (!clickedCard || clickedCard.parentNode.dataset.component ==='foundation') {
             return;
         }
 
         let targetFoundation = [].filter.call(this._foundations,
                 elem => elem.dropTarget.isCardAllowable({
+                    elem: clickedCard,
                     suit: clickedCard.dragElement.suit,
                     cardNumber: clickedCard.dragElement.cardNumber
         }))[0];
