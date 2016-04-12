@@ -64,7 +64,7 @@ export default class Game extends dragManager {
         if(targetFoundation) {
             let avatar = clickedCard.dragElement.onDragStart(event.pageX, event.pageY, event);
             targetFoundation.dropTarget.onDragEnd(avatar);
-            this._sendAllCardsToFoundations();
+            this._sendAllRemainingCardsToFoundations();
         }
     }
 
@@ -110,7 +110,7 @@ export default class Game extends dragManager {
     }
 
 //------------------supported private methods----------------
-    _sendAllCardsToFoundations() {
+    _sendAllRemainingCardsToFoundations() {
         if ( this._el.querySelector('[data-side = "downturned"]') ) {
             return;
         }
@@ -129,7 +129,6 @@ export default class Game extends dragManager {
     }
 
     _allFoundationsAreFulfilled() {
-
         return [].every.call(this._foundations, elem => elem.children.length === 13);
     }
 

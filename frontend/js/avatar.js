@@ -7,10 +7,10 @@ export default class Avatar {
         this._old = {
             parent: this._el.parentNode,
             nextSibling: this._el.nextSibling,
-            position: this._el.position || '',
-            left: this._el.left || '',
-            top: this._el.top || '',
-            zIndex: this._el.zIndex || ''
+            position: this._el.style.position || '',
+            left: this._el.style.left || '',
+            top: this._el.style.top || '',
+            zIndex: this._el.style.zIndex || ''
         };
 
     }
