@@ -1,0 +1,68 @@
+body {
+    background: url(../img/table.jpg) no-repeat;
+    background-size: cover;
+}
+.container {
+    width: 980px;
+    height: 885px;
+    margin: 0;
+    padding: 10px;
+}
+.innerContainer {
+    display: inline-block;
+}
+.cardPlace {
+    width: 92px;
+    height: 134px;
+    margin: 12px 22px;
+    border-radius: 8px;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+}
+.cardPlace.foundation {
+    margin: 10px 20px;
+    border: 2px solid #ffffff;
+}
+.cardPlace.pill {
+    margin: 10px 20px;
+    border-radius: 8px 8px 0 0;
+    border: 2px solid #ffffff;
+    border-bottom: none;
+}
+.card {
+    width: 90px;
+    height: 132px;
+    border-radius: 8px;
+    border: 1px solid black;
+    display: inline-block;
+    position: absolute;
+    vertical-align: middle;
+    background: url(../img/cards-svg-sprite.png) no-repeat;
+    background-position: -1px -1px;
+}
+.card.downturned {
+    background: url(../img/downturned.jpg) no-repeat;
+    background-size: cover;
+    background-position: -2px -1px;
+}
+
+.card >.card {
+    margin-top: 15px;
+    margin-left: -1px;
+}
+.notification {
+    position: absolute;
+    z-index: 1000;
+    padding: 10px 10px 15px;
+    margin: 0;
+    border-radius: 15px;
+    border: 2px solid ;
+    color: white;
+    font: normal 50px Georgia;
+    background: darkred;
+}
+
+.js-hidden {
+    display: none;
+}
